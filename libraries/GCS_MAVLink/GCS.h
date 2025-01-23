@@ -24,6 +24,7 @@
 #include <AP_Mount/AP_Mount_config.h>
 #include <AP_SerialManager/AP_SerialManager.h>
 #include <AP_RangeFinder/AP_RangeFinder_config.h>
+#include <AP_YuTong/AP_YuTong_config.h>
 #include <AP_Winch/AP_Winch_config.h>
 #include <AP_AHRS/AP_AHRS_config.h>
 #include <AP_Arming/AP_Arming_config.h>
@@ -349,6 +350,9 @@ public:
     // found.  Rover overrides this!
 #if AP_RANGEFINDER_ENABLED
     virtual void send_rangefinder() const;
+#endif
+#if AP_YUTONG_ENABLED
+    virtual void send_yutong() const;
 #endif
     void send_proximity();
     virtual void send_nav_controller_output() const = 0;

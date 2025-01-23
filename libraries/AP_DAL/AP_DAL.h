@@ -4,6 +4,7 @@
 #include "AP_DAL_Baro.h"
 #include "AP_DAL_GPS.h"
 #include "AP_DAL_RangeFinder.h"
+#include "AP_DAL_YuTong.h"
 #include "AP_DAL_Compass.h"
 #include "AP_DAL_Airspeed.h"
 #include "AP_DAL_Beacon.h"
@@ -135,6 +136,12 @@ public:
 #if AP_RANGEFINDER_ENABLED
     AP_DAL_RangeFinder *rangefinder() {
         return _rangefinder;
+    }
+#endif
+
+#if AP_YUTONG_ENABLED
+    AP_DAL_YuTong *yutong() {
+        return _yutong;
     }
 #endif
 
@@ -271,6 +278,12 @@ public:
         }
         _rangefinder->handle_message(msg);
 #endif
+#if AP_YUTONG_ENABLED
+        if (_yutong == nullptr) {
+            _yutong = NEW_NOTHROW AP_DAL_YuTong;
+        }
+        _yutong->handle_message(msg);
+#endif
     }
     void handle_message(const log_RRNI &msg) {
 #if AP_RANGEFINDER_ENABLED
@@ -278,6 +291,12 @@ public:
             _rangefinder = NEW_NOTHROW AP_DAL_RangeFinder;
         }
         _rangefinder->handle_message(msg);
+#endif
+#if AP_YUTONG_ENABLED
+        if (_yutong == nullptr) {
+            _yutong = NEW_NOTHROW AP_DAL_YuTong;
+        }
+        _yutong->handle_message(msg);
 #endif
     }
 
@@ -368,6 +387,9 @@ private:
     AP_DAL_GPS _gps;
 #if AP_RANGEFINDER_ENABLED
     AP_DAL_RangeFinder *_rangefinder;
+#endif
+#if AP_YUTONG_ENABLED
+    AP_DAL_YuTong *_yutong;
 #endif
     AP_DAL_Compass _compass;
     AP_DAL_Airspeed *_airspeed;

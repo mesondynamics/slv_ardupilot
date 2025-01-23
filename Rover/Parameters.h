@@ -172,6 +172,8 @@ public:
         k_param_rangefinder_debounce, // unused
         k_param_rangefinder,          // rangefinder object
 
+        k_param_yutong,          // yutong object
+
         //
         // 210: driving modes
         //

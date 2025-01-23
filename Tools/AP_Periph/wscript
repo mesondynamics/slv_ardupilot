@@ -55,6 +55,7 @@ def build(bld):
                      'AP_InternalError',
                      'AP_Airspeed',
                      'AP_RangeFinder',
+                     'AP_YuTong',
                      'AP_ROMFS',
                      'AP_TemperatureSensor',
                      'AP_MSP',

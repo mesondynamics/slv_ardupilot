@@ -1,6 +1,7 @@
 #include "Rover.h"
 
 #include <AP_RangeFinder/AP_RangeFinder_Backend.h>
+#include <AP_YuTong/AP_YuTong_Backend.h>
 
 // check for new compass data - 10Hz
 void Rover::update_compass(void)
@@ -94,6 +95,17 @@ void Rover::read_rangefinders(void)
     rangefinder.update();
 #if HAL_LOGGING_ENABLED
     Log_Write_Depth();
+#endif
+}
+#endif
+
+#if AP_YUTONG_ENABLED
+// read the yutongs
+void Rover::read_yutongs(void)
+{
+    yutong.update();
+#if HAL_LOGGING_ENABLED
+    Log_Write_YuTong();
 #endif
 }
 #endif

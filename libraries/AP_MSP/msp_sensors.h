@@ -10,6 +10,12 @@ typedef struct PACKED {
     int32_t distance_mm; // Negative value for out of range
 } msp_rangefinder_data_message_t;
 
+// src/main/msp/msp_protocol_v2_sensor_msg.h
+typedef struct PACKED {
+    uint8_t quality;    // [0;255]
+    int32_t distance_mm; // Negative value for out of range
+} msp_yutong_data_message_t;
+
 typedef struct PACKED {
     uint8_t quality;    // [0;255]
     int32_t motion_x;

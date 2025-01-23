@@ -42,6 +42,7 @@
 #include <AP_Notify/AP_Notify.h>                    // Notify library
 #include <AP_Param/AP_Param.h>
 #include <AP_RangeFinder/AP_RangeFinder.h>
+#include <AP_YuTong/AP_YuTong.h>
 #include <AP_Relay/AP_Relay.h>                      // APM relay
 #include <AP_RSSI/AP_RSSI.h>                        // RSSI Library
 #include <AP_Scheduler/AP_Scheduler.h>
@@ -349,6 +350,9 @@ protected:
 #endif
 #if AP_RANGEFINDER_ENABLED
     RangeFinder rangefinder;
+#endif
+#if AP_YUTONG_ENABLED
+    YuTong yutong;
 #endif
 
 #if HAL_LOGGING_ENABLED

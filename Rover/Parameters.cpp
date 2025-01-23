@@ -281,6 +281,12 @@ const AP_Param::Info Rover::var_info[] = {
     GOBJECT(rangefinder,                 "RNGFND", RangeFinder),
 #endif
 
+#if AP_YUTONG_ENABLED
+    // @Group: RNGFND
+    // @Path: ../libraries/AP_YuTong/AP_YuTong.cpp
+    GOBJECT(yutong,                 "YUTONG", YuTong),
+#endif
+
     // @Group: INS
     // @Path: ../libraries/AP_InertialSensor/AP_InertialSensor.cpp
     GOBJECT(ins,                            "INS", AP_InertialSensor),

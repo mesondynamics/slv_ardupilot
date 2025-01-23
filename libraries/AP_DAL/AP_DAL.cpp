@@ -96,6 +96,11 @@ void AP_DAL::start_frame(AP_DAL::FrameType frametype)
         _rangefinder->start_frame();
     }
 #endif
+#if AP_YUTONG_ENABLED
+    if (_yutong) {
+        _yutong->start_frame();
+    }
+#endif
 #if AP_BEACON_ENABLED
     if (_beacon) {
         _beacon->start_frame();
@@ -141,6 +146,13 @@ void AP_DAL::init_sensors(void)
     auto *rng = AP::rangefinder();
     if (rng && rng->num_sensors() > 0) {
         alloc_failed |= (_rangefinder = NEW_NOTHROW AP_DAL_RangeFinder) == nullptr;
+    }
+#endif
+
+#if AP_YUTONG_ENABLED
+    auto *yt = AP::yutong();
+    if (yt && yt->num_sensors() > 0) {
+        alloc_failed |= (_yutong = NEW_NOTHROW AP_DAL_YuTong) == nullptr;
     }
 #endif
 

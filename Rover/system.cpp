@@ -48,6 +48,12 @@ void Rover::init_ardupilot()
     rangefinder.init(ROTATION_NONE);
 #endif
 
+#if AP_YUTONG_ENABLED
+    // initialise yutong
+    yutong.set_log_rfnd_bit(MASK_LOG_YUTONG);
+    yutong.init(ROTATION_NONE);
+#endif
+
 #if HAL_PROXIMITY_ENABLED
     // init proximity sensor
     g2.proximity.init();

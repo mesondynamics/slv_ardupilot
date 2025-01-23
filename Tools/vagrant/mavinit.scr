@@ -90,6 +90,10 @@ module load graph
 @alias add grange g rangefinder_roll(RANGEFINDER,ATTITUDE,maxdist=39.5) GLOBAL_POSITION_INT.relative_alt*0.001
 @alias add grangealt g RANGEFINDER.distance GLOBAL_POSITION_INT.relative_alt*0.001
 @alias add grangev g RANGEFINDER.voltage
+@alias add grangev g YUTONG.soc
+@alias add grangev g YUTONG.speed
+@alias add grangev g YUTONG.motor_temperature
+@alias add grangev g YUTONG.gear
 @alias add gahrserr g AHRS.error_rp AHRS.error_yaw
 @alias add gage g GPS2_RAW.dgps_age
 @alias add gomega g degrees(AHRS.omegaIx) degrees(AHRS.omegaIy) degrees(AHRS.omegaIz)

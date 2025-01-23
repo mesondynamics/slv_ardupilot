@@ -500,6 +500,7 @@ void AP_SerialManager::init()
                     break;
                 case SerialProtocol_Aerotenna_USD1:
                     state[i].protocol.set_and_save(SerialProtocol_Rangefinder);
+                    state[i].protocol.set_and_save(SerialProtocol_Yutong);
                     break;
                 case SerialProtocol_Sbus1:
                     state[i].baud.set_and_default(AP_SERIALMANAGER_SBUS1_BAUD / 1000);   // update baud param in case user looks at it

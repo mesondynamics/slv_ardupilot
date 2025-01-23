@@ -75,6 +75,10 @@ private:
     uint8_t last_WATER_DEPTH_index;
 #endif
 
+#if AP_YUTONG_ENABLED
+    void send_yutong() const override;
+#endif
+
 #if HAL_HIGH_LATENCY2_ENABLED
     uint8_t high_latency_tgt_heading() const override;
     uint16_t high_latency_tgt_dist() const override;

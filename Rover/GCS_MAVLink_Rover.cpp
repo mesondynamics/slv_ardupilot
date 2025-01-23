@@ -4,6 +4,7 @@
 
 #include <AP_RPM/AP_RPM_config.h>
 #include <AP_RangeFinder/AP_RangeFinder_Backend.h>
+#include <AP_YuTong/AP_YuTong_Backend.h>
 #include <AP_EFI/AP_EFI_config.h>
 #include <AC_Avoidance/AP_OADatabase.h>
 
@@ -253,6 +254,49 @@ void GCS_MAVLINK_Rover::send_water_depth()
 
 }
 #endif  // AP_RANGEFINDER_ENABLED
+
+#if AP_YUTONG_ENABLED
+void GCS_MAVLINK_Rover::send_yutong() const
+{
+    float distance = 0;
+    // float voltage = 0;
+    bool got_one = false;
+    float soc = 0.0;
+    float speed_kmh = 0.0;
+    float motor_temperature = 0.0;
+    uint8_t gear = 0;
+
+    // report smaller distance of all yutongs
+    for (uint8_t i=0; i<rover.yutong.num_sensors(); i++) {
+        AP_YuTong_Backend *s = rover.yutong.get_backend(i);
+        if (s == nullptr) {
+            continue;
+        }
+        if (!got_one ||
+            s->distance() < distance) {
+            distance = s->distance();
+            // voltage = s->voltage_mv();
+            soc = s->soc();
+            speed_kmh = s->speed_kmh();
+            motor_temperature = s->motor_temperature();
+            gear = s->gear();
+            got_one = true;
+        }
+    }
+    if (!got_one) {
+        // no relevant data found
+        return;
+    }
+
+    mavlink_msg_yutong_send(
+        chan,
+        soc,
+        speed_kmh,
+        motor_temperature,
+        gear);
+}
+
+#endif  // AP_YUTONG_ENABLED
 
 /*
   send PID tuning message
@@ -664,6 +708,9 @@ static const ap_message STREAM_EXTRA3_msgs[] = {
 #if AP_RANGEFINDER_ENABLED
     MSG_RANGEFINDER,
     MSG_WATER_DEPTH,
+#endif
+#if AP_YUTONG_ENABLED
+    MSG_YUTONG,
 #endif
     MSG_DISTANCE_SENSOR,
     MSG_SYSTEM_TIME,

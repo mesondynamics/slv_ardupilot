@@ -1,6 +1,7 @@
 #include "Rover.h"
 
 #include <AP_RangeFinder/AP_RangeFinder_Backend.h>
+#include <AP_YuTong/AP_YuTong_Backend.h>
 
 #if HAL_LOGGING_ENABLED
 
@@ -55,6 +56,59 @@ void Rover::Log_Write_Depth()
             continue;
         }
         rangefinder_last_reading_ms[i] = reading_ms;
+
+        float temp_C;
+        if (!s->get_temp(temp_C)) {
+            temp_C = 0.0f;
+        }
+
+        // @LoggerMessage: DPTH
+        // @Description: Depth messages on boats with downwards facing range finder
+        // @Field: TimeUS: Time since system startup
+        // @Field: Inst: Instance
+        // @Field: Lat: Latitude 
+        // @Field: Lng: Longitude   
+        // @Field: Depth: Depth as detected by the sensor
+        // @Field: Temp: Temperature
+
+        logger.Write("DPTH", "TimeUS,Inst,Lat,Lng,Depth,Temp",
+                            "s#DUmO", "F-GG00", "QBLLff",
+                            AP_HAL::micros64(),
+                            i,
+                            loc.lat,
+                            loc.lng,
+                            (double)(s->distance()),
+                            temp_C);
+    }
+}
+#endif
+
+#if AP_YUTONG_ENABLED
+// Write a range finder depth message
+void Rover::Log_Write_YuTong()
+{
+    // only log depth on boats
+    if (!rover.is_boat() || !yutong.has_orientation(ROTATION_PITCH_270)) {
+        return;
+    }
+
+    // get position
+    Location loc;
+    IGNORE_RETURN(ahrs.get_location(loc));
+
+    for (uint8_t i=0; i<yutong.num_sensors(); i++) {
+        const AP_YuTong_Backend *s = yutong.get_backend(i);
+        
+        if (s == nullptr || s->orientation() != ROTATION_PITCH_270 || !s->has_data()) {
+            continue;
+        }
+
+        // check if new sensor reading has arrived
+        const uint32_t reading_ms = s->last_reading_ms();
+        if (reading_ms == yutong_last_reading_ms[i]) {
+            continue;
+        }
+        yutong_last_reading_ms[i] = reading_ms;
 
         float temp_C;
         if (!s->get_temp(temp_C)) {

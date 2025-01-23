@@ -181,6 +181,7 @@ protected:
     // MSP sensor command processing
     void msp_handle_opflow(const MSP::msp_opflow_data_message_t &pkt);
     void msp_handle_rangefinder(const MSP::msp_rangefinder_data_message_t &pkt);
+    void msp_handle_yutong(const MSP::msp_yutong_data_message_t &pkt);
     void msp_handle_gps(const MSP::msp_gps_data_message_t &pkt);
     void msp_handle_compass(const MSP::msp_compass_data_message_t &pkt);
     void msp_handle_baro(const MSP::msp_baro_data_message_t &pkt);

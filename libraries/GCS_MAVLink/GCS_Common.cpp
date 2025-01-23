@@ -34,6 +34,8 @@
 #include <AP_Vehicle/AP_Vehicle.h>
 #include <AP_RangeFinder/AP_RangeFinder.h>
 #include <AP_RangeFinder/AP_RangeFinder_Backend.h>
+#include <AP_YuTong/AP_YuTong.h>
+#include <AP_YuTong/AP_YuTong_Backend.h>
 #include <AP_Airspeed/AP_Airspeed.h>
 #include <AP_Camera/AP_Camera.h>
 #include <AP_Gripper/AP_Gripper.h>
@@ -508,6 +510,26 @@ void GCS_MAVLINK::send_rangefinder() const
             chan,
             s->distance(),
             s->voltage_mv() * 0.001f);
+}
+#endif
+
+#if AP_YUTONG_ENABLED
+void GCS_MAVLINK::send_yutong() const
+{
+    YuTong *yutong = YuTong::get_singleton();
+    if (yutong == nullptr) {
+        return;
+    }
+    AP_YuTong_Backend *s = yutong->find_instance(ROTATION_PITCH_270);
+    if (s == nullptr) {
+        return;
+    }
+    mavlink_msg_yutong_send(
+            chan,
+            s->soc(),
+            s->speed_kmh(),
+            s->motor_temperature(),
+            s->gear());
 }
 #endif
 
@@ -1066,6 +1088,9 @@ ap_message GCS_MAVLINK::mavlink_id_to_ap_message_id(const uint32_t mavlink_id) c
 #if AP_RANGEFINDER_ENABLED
         { MAVLINK_MSG_ID_RANGEFINDER,           MSG_RANGEFINDER},
 #endif
+#if AP_YUTONG_ENABLED
+        { MAVLINK_MSG_ID_YUTONG,           MSG_YUTONG},
+#endif
         { MAVLINK_MSG_ID_DISTANCE_SENSOR,       MSG_DISTANCE_SENSOR},
 #if AP_TERRAIN_AVAILABLE
         { MAVLINK_MSG_ID_TERRAIN_REQUEST,       MSG_TERRAIN_REQUEST},
@@ -1135,6 +1160,9 @@ ap_message GCS_MAVLINK::mavlink_id_to_ap_message_id(const uint32_t mavlink_id) c
         { MAVLINK_MSG_ID_ESC_TELEMETRY_1_TO_4,  MSG_ESC_TELEMETRY},
 #endif
 #if AP_RANGEFINDER_ENABLED && APM_BUILD_TYPE(APM_BUILD_Rover)
+        { MAVLINK_MSG_ID_WATER_DEPTH,           MSG_WATER_DEPTH},
+#endif
+#if AP_YUTONG_ENABLED && APM_BUILD_TYPE(APM_BUILD_Rover)
         { MAVLINK_MSG_ID_WATER_DEPTH,           MSG_WATER_DEPTH},
 #endif
 #if HAL_HIGH_LATENCY2_ENABLED
@@ -4114,6 +4142,13 @@ void GCS_MAVLINK::handle_distance_sensor(const mavlink_message_t &msg)
     }
 #endif
 
+#if AP_YUTONG_ENABLED
+    YuTong *yutong = AP::yutong();
+    if (yutong != nullptr) {
+        yutong->handle_msg(msg);
+    }
+#endif
+
 #if HAL_PROXIMITY_ENABLED
     AP_Proximity *proximity = AP::proximity();
     if (proximity != nullptr) {
@@ -6214,6 +6249,13 @@ bool GCS_MAVLINK::try_send_message(const enum ap_message id)
     case MSG_RANGEFINDER:
         CHECK_PAYLOAD_SIZE(RANGEFINDER);
         send_rangefinder();
+        break;
+#endif
+
+#if AP_YUTONG_ENABLED
+    case MSG_YUTONG:
+        CHECK_PAYLOAD_SIZE(YUTONG);
+        send_yutong();
         break;
 #endif
 

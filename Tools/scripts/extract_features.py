@@ -89,6 +89,12 @@ class ExtractFeatures(object):
             ('AP_RANGEFINDER_JRE_SERIAL_ENABLED', r'AP_RangeFinder_JRE_Serial::get_reading\b',),
             ('AP_RANGEFINDER_RDS02UF_ENABLED', r'AP_RangeFinder_RDS02UF::get_reading\b',),
 
+            ('AP_YUTONG_ENABLED', 'YuTong::YuTong',),
+            ('AP_YUTONG_{type}_ENABLED', r'AP_YuTong_(?P<type>.*)::update\b',),
+            ('AP_YUTONG_{type}_ENABLED', r'AP_YuTong_(?P<type>.*)::get_reading\b',),
+            ('AP_YUTONG_{type}_ENABLED', r'AP_YuTong_(?P<type>.*)::model_dist_max_cm\b',),
+            ('AP_YUTONG_{type}_ENABLED', r'AP_YuTong_(?P<type>.*)::handle_frame\b',),
+
             ('AP_GPS_NMEA_UNICORE_ENABLED', r'AP_GPS_NMEA::parse_agrica_field',),
             ('AP_GPS_{type}_ENABLED', r'AP_GPS_(?P<type>.*)::read\b',),
 

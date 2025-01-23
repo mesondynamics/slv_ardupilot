@@ -25,6 +25,7 @@
 #include <AP_Notify/AP_Notify.h>
 #include <AP_OpticalFlow/AP_OpticalFlow.h>
 #include <AP_RangeFinder/AP_RangeFinder.h>
+#include <AP_YuTong/AP_YuTong.h>
 #include <AP_RSSI/AP_RSSI.h>
 #include <AP_RTC/AP_RTC.h>
 #include <GCS_MAVLink/GCS.h>
@@ -509,6 +510,13 @@ MSPCommandResult AP_MSP_Telem_Backend::msp_process_sensor_command(uint16_t cmd_m
     }
     break;
 #endif
+#if HAL_MSP_YUTONG_ENABLED
+    case MSP2_SENSOR_YUTONG: {
+        const MSP::msp_yutong_data_message_t *pkt = (const MSP::msp_yutong_data_message_t *)src->ptr;
+        msp_handle_yutong(*pkt);
+    }
+    break;
+#endif
 #if HAL_MSP_OPTICALFLOW_ENABLED
     case MSP2_SENSOR_OPTIC_FLOW: {
         const MSP::msp_opflow_data_message_t *pkt = (const MSP::msp_opflow_data_message_t *)src->ptr;
@@ -570,6 +578,18 @@ void AP_MSP_Telem_Backend::msp_handle_rangefinder(const MSP::msp_rangefinder_dat
     rangefinder->handle_msp(pkt);
 }
 #endif
+
+#if HAL_MSP_YUTONG_ENABLED
+void AP_MSP_Telem_Backend::msp_handle_yutong(const MSP::msp_yutong_data_message_t &pkt)
+{
+    YuTong *yutong = AP::yutong();
+    if (yutong == nullptr) {
+        return;
+    }
+    yutong->handle_msp(pkt);
+}
+#endif
+
 
 #if HAL_MSP_GPS_ENABLED
 void AP_MSP_Telem_Backend::msp_handle_gps(const MSP::msp_gps_data_message_t &pkt)

@@ -101,6 +101,7 @@ BUILD_OPTIONS = [
     Feature('MSP', 'MSP_COMPASS', 'AP_COMPASS_MSP_ENABLED', 'Enable MSP compass', 0, 'MSP,OSD'),
     Feature('MSP', 'MSP_OPTICALFLOW', 'HAL_MSP_OPTICALFLOW_ENABLED', 'Enable MSP OpticalFlow', 0, 'MSP,OSD,OPTICALFLOW'), # also OPTFLOW dep   # NOQA: E501
     Feature('MSP', 'MSP_RANGEFINDER', 'HAL_MSP_RANGEFINDER_ENABLED', 'Enable MSP rangefinder', 0, 'MSP,OSD,RANGEFINDER'),
+    Feature('MSP', 'MSP_YUTONG', 'HAL_MSP_YUTONG_ENABLED', 'Enable MSP yutong', 0, 'MSP,OSD,YUTONG'),
     Feature('MSP', 'MSP_DISPLAYPORT', 'HAL_WITH_MSP_DISPLAYPORT', 'Enable MSP DisplayPort OSD (aka CANVAS MODE)', 0, 'MSP,OSD'),   # NOQA: E501
 
     Feature('ICE', 'ICE Engine', 'AP_ICENGINE_ENABLED', 'Enable Internal combustion engine support', 0, 'RPM'),
@@ -279,6 +280,14 @@ BUILD_OPTIONS = [
     Feature('Rangefinder', 'RANGEFINDER_VL53L1X', 'AP_RANGEFINDER_VL53L1X_ENABLED', "Enable Rangefinder - VL53L1X", 0, "RANGEFINDER"),   # NOQA: E501
     Feature('Rangefinder', 'RANGEFINDER_WASP', 'AP_RANGEFINDER_WASP_ENABLED', "Enable Rangefinder - Wasp", 0, "RANGEFINDER"),   # NOQA: E501
     Feature('Rangefinder', 'RANGEFINDER_RDS02UF', 'AP_RANGEFINDER_RDS02UF_ENABLED', "Enable Rangefinder - RDS02UF", 0, "RANGEFINDER"),   # NOQA: E501
+
+    Feature('Yutong', 'YUTONG', 'AP_YUTONG_ENABLED', "Enable Yutongs", 0, None),   # NOQA: E501
+    Feature('Yutong', 'YUTONG_LUA', 'AP_YUTONG_LUA_ENABLED', "Enable Yutong - Lua Scripting", 0, "YUTONG,SCRIPTING"),   # NOQA: E501
+    Feature('Yutong', 'YUTONG_MAVLINK', 'AP_YUTONG_MAVLINK_ENABLED', "Enable Yutong - MAVLink", 0, "YUTONG"),   # NOQA: E501
+    # Feature('Yutong', 'YUTONG_SIM', 'AP_YUTONG_SIM_ENABLED', "Enable Yutong - SIM", 0, "YUTONG"),   # NOQA: E501
+    Feature('Yutong', 'YUTONG_CUSTOM_CAN', 'AP_YUTONG_CUSTOM_CAN_ENABLED', "Enable Yutong - Custom CAN", 0, "YUTONG"),   # NOQA: E501
+    Feature('Yutong', 'YUTONG_DRONECAN', 'AP_YUTONG_DRONECAN_ENABLED', "Enable Yutong - DroneCAN", 0, "YUTONG,DroneCAN"),   # NOQA: E501
+    Feature('Yutong', 'YUTONG_WASP', 'AP_YUTONG_WASP_ENABLED', "Enable Yutong - Wasp", 0, "YUTONG"),   # NOQA: E501
 
     Feature('Sensors', 'OPTICALFLOW', 'AP_OPTICALFLOW_ENABLED', 'Enable Optical Flow', 0, None),
     Feature('Sensors', 'OPTICALFLOW_CXOF', 'AP_OPTICALFLOW_CXOF_ENABLED', 'Enable Optical flow CXOF Sensor', 0, "OPTICALFLOW"),

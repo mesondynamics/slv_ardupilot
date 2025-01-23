@@ -3,6 +3,7 @@
 #include "Rover.h"
 
 #include <AP_RangeFinder/AP_RangeFinder_Backend.h>
+#include <AP_YuTong/AP_YuTong_Backend.h>
 
 uint8_t GCS_Rover::sysid_this_mav() const
 {
@@ -64,6 +65,18 @@ void GCS_Rover::update_vehicle_sensor_status_flags(void)
         control_sensors_present |= MAV_SYS_STATUS_SENSOR_LASER_POSITION;
         control_sensors_enabled |= MAV_SYS_STATUS_SENSOR_LASER_POSITION;
         AP_RangeFinder_Backend *s = rangefinder->get_backend(0);
+        if (s != nullptr && s->has_data()) {
+            control_sensors_health |= MAV_SYS_STATUS_SENSOR_LASER_POSITION;
+        }
+    }
+#endif
+
+#if AP_YUTONG_ENABLED
+    const YuTong *yutong = YuTong::get_singleton();
+    if (yutong && yutong->num_sensors() > 0) {
+        control_sensors_present |= MAV_SYS_STATUS_SENSOR_LASER_POSITION;
+        control_sensors_enabled |= MAV_SYS_STATUS_SENSOR_LASER_POSITION;
+        AP_YuTong_Backend *s = yutong->get_backend(0);
         if (s != nullptr && s->has_data()) {
             control_sensors_health |= MAV_SYS_STATUS_SENSOR_LASER_POSITION;
         }

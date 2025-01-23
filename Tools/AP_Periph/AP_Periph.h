@@ -14,6 +14,8 @@
 #include <AP_Airspeed/AP_Airspeed.h>
 #include <AP_RangeFinder/AP_RangeFinder.h>
 #include <AP_RangeFinder/AP_RangeFinder_Backend.h>
+#include <AP_YuTong/AP_YuTong.h>
+#include <AP_YuTong/AP_YuTong_Backend.h>
 #include <AP_Proximity/AP_Proximity.h>
 #include <AP_EFI/AP_EFI.h>
 #include <AP_KDECAN/AP_KDECAN.h>

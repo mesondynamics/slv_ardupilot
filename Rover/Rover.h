@@ -29,6 +29,7 @@
 #include <AP_Mount/AP_Mount.h>                      // Camera/Antenna mount
 #include <AP_Param/AP_Param.h>
 #include <AP_RangeFinder/AP_RangeFinder.h>          // Range finder library
+#include <AP_YuTong/AP_YuTong.h>                    // YuTong library
 #include <AP_RCMapper/AP_RCMapper.h>                // RC input mapping library
 #include <AP_RPM/AP_RPM.h>                          // RPM input library
 #include <AP_Scheduler/AP_Scheduler.h>              // main loop scheduler
@@ -211,6 +212,11 @@ private:
     uint32_t rangefinder_last_reading_ms[RANGEFINDER_MAX_INSTANCES];
 #endif
 
+#if AP_YUTONG_ENABLED
+    // range finder last update for each instance (used for DPTH logging)
+    uint32_t yutong_last_reading_ms[YUTONG_MAX_INSTANCES];
+#endif
+
     // Ground speed
     // The amount current ground speed is below min ground speed.  meters per second
     float ground_speed;
@@ -343,6 +349,7 @@ private:
     // Log.cpp
     void Log_Write_Attitude();
     void Log_Write_Depth();
+    void Log_Write_YuTong();
     void Log_Write_GuidedTarget(uint8_t target_type, const Vector3f& pos_target, const Vector3f& vel_target);
     void Log_Write_Nav_Tuning();
     void Log_Write_Sail();
@@ -376,6 +383,9 @@ private:
     void update_wheel_encoder();
 #if AP_RANGEFINDER_ENABLED
     void read_rangefinders(void);
+#endif
+#if AP_YUTONG_ENABLED
+    void read_yutongs(void);
 #endif
 
     // Steering.cpp
